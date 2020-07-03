@@ -150,7 +150,7 @@ int main(int argc, char **argv) {
 #if ENABLE_GUI
             zed.retrieveMeasure(point_cloud, MEASURE::XYZRGBA, MEM::GPU, display_resolution);
             zed.getPosition(cam_pose, REFERENCE_FRAME::WORLD);
-            viewer.updateData(point_cloud, objects.object_list, cam_pose.pose_data);
+            viewer.updateData(point_cloud, objects, cam_pose.pose_data);  // Jae: Changed objects.object_list to objects
             gl_viewer_available = viewer.isAvailable();
 
             zed.retrieveImage(image_left, VIEW::LEFT, MEM::CPU, display_resolution);

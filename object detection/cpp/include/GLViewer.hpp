@@ -29,6 +29,21 @@
 #define MOUSE_T_SENSITIVITY 100.f
 #define KEY_T_SENSITIVITY 0.1f
 
+// Jae: For social distancing
+#define SOCIAL_DISTANCE_DETECTION
+#ifdef SOCIAL_DISTANCE_DETECTION
+#define SOCIAL_DISTANCE_THRESHOLD 2.0f 
+#define SOCIAL_DISTANCE_THRESHOLD_TIME 2.f 
+#define SOCIAL_DISTANCE_DETECTION_PERCENT 75
+#endif
+
+// Jae: Utils for social distancing
+struct DistanceData {
+    unsigned long long ts_ms;
+    float distance;
+};
+
+
 // Utils
 std::vector<sl::float3> getBBoxOnFloorPlane(std::vector<sl::float3> &bbox, sl::Pose cam_pose);
 
@@ -237,7 +252,7 @@ public:
     bool isAvailable();
 
     void init(int argc, char **argv, sl::CameraParameters& param);
-    void updateData(sl::Mat& matXYZRGBA, std::vector<sl::ObjectData>& objs, sl::Transform &cam_pose);
+    void updateData(sl::Mat& matXYZRGBA, sl::Objects &obj, sl::Transform &cam_pose);
 
     void exit();
 private:
@@ -302,6 +317,8 @@ private:
     Simple3DObject skeletons;
     Simple3DObject floor_grid;
 
+    // Jae: add for social distancing
+    std::map<int, std::deque<DistanceData>> min_dist_warn_map;
 };
 
 #endif /* __VIEWER_INCLUDE__ */
