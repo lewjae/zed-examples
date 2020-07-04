@@ -75,6 +75,29 @@ void addVert(Simple3DObject &obj, float i_f, float limit, float height, sl::floa
     obj.addLine(p3, p4, clr);
 }
 
+inline sl::float4 generateColorClassFromState(bool state) {
+    sl::float4 clr;
+
+    if (state) {
+        clr = sl::float4(0.9, 0.1, 0.2,0.8);
+    }
+    else {
+        clr = sl::float4(.2f, .9f, .5f,0.8);
+    }
+
+    return clr;
+}
+
+
+inline sl::float4 generateColorClass(int idx) {
+    int const offset = idx % 5;
+    sl::float4 clr(colors2[offset][0], colors2[offset][1], colors2[offset][2],0.8);
+    return clr;
+}
+
+
+
+
 GLViewer* currentInstance_ = nullptr;
 
 GLViewer::GLViewer() : available(false) {
@@ -287,7 +310,7 @@ void GLViewer::updateData(sl::Mat &matXYZRGBA, sl::Objects &obj, sl::Transform& 
             }
 
         }
-
+/*
         // Jae: Add social distancing feature
 #ifdef SOCIAL_DISTANCE_DETECTION
         // Calculate min distance for the frame
@@ -328,7 +351,57 @@ void GLViewer::updateData(sl::Mat &matXYZRGBA, sl::Objects &obj, sl::Transform& 
     dist_warn_map = checkPeoplesDistance(min_dist_warn_map, obj.timestamp);   
 #endif        
     
+    // For each object
+    for (int i = 0; i <obje.size(); i++) {
+        // Show only tracked objects
+        if (objs[i].tracking_state == sl::OBJECT_TRACKING_STATE::OK && objs[i] >= 0) {
+            auto bb = objs[i].bounding_box;
+            auto pos_ = objs[j].position;
 
+            ObjectExtPosition ext_pos_;
+            ext_pos_.position = pos_;
+            ext_pos_.timestamp = obj.timestamp;
+
+
+#ifdef SOCIAL_DISTANCE_DETECTION
+            // Red or Green: depends the percentage the frames the distance is below the threshold
+            if (dist_warn_map[objs[i].ID] > SOCIAL_DISTANCE_THRESHOLD_PERCENT)  {
+                print_message = true;
+                print_message_count = 0;
+            }
+            auto clr_id = generateColorClassFromState(dist_warn_map[objs[i].id]>75);
+#else
+            auto clr_id = generateColorClass(objs[i].id);
+#endif
+            // Draw boxes
+            if (g_showBox && bb_.size() > 0) {
+                BBox_obj.addBoundingBox(bb_,clr_id);
+            }
+
+#if defined(SOCIAL_DISTANCE_DETECTION)
+            g_showLabel = false;
+#endif
+            // Draw Labels
+            if (g_showLabel) {
+                if (bb_.size() > 0)  {
+                    objectsName.emplace_back();
+                    objectsName.back().name_lineA = "ID: " + std::to_string(objs[i].id);
+                    std:: stringstream ss_vel;
+                    ss_vel << std::fixed << std::setprecision(1) << objs[i].velocity.norm();
+                    objectsName.back().name_lineB = ss.vel.str() + " m/s";
+                    objectsName.back().color = clr_id;
+                    objectsName.back().position = pos_;
+                    objectsName.back().position.y = (bb_[0].y + bb_[1].y + bb_[2].y + bb_[3].y)/4.f + 0.2f;
+                }
+            }
+        }    
+    */
+    }
+
+
+
+
+    f_count ++;
     mtx.unlock();
 }
 

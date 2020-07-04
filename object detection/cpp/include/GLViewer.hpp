@@ -243,6 +243,11 @@ struct ObjectClassName {
     sl::float4 color;
 };
 
+stuct ObjectExtPosition {
+    sl::float3 position
+    sl::Timestamp timestamp
+};
+
 // This class manages input events, window and Opengl rendering pipeline
 
 class GLViewer {
@@ -319,6 +324,10 @@ private:
 
     // Jae: add for social distancing
     std::map<int, std::deque<DistanceData>> min_dist_warn_map;
+    bool g_showBox = true;
+    bool g_showLabel = true;
+    Simple3Dobject BBox_obj;
+    std::vector<ObjectClassName> objectsName;
 };
 
 #endif /* __VIEWER_INCLUDE__ */
