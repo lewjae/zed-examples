@@ -327,8 +327,17 @@ void GLViewer::updateData(sl::Mat &matXYZRGBA, sl::Objects &obj, sl::Transform& 
     std::map<int,float> dist_warn_map;
     dist_warn_map = checkPeoplesDistance(min_dist_warn_map, obj.timestamp);   
 #endif        
-    
-
+        // For each object
+    //for (int i = 0; i <objs.size(); i++) {
+        // Show only tracked objects
+        //if (objs[i].tracking_state == sl::OBJECT_TRACKING_STATE::OK && objs[i] >= 0) {
+            //auto bb = objs[i].bounding_box;
+            //auto pos_ = objs[i].position;
+            //ObjectExtPosition ext_pos_;
+            //ext_pos_.position = pos_;
+            //ext_pos_.timestamp = obj.timestamp;
+        //}    
+    //}        
     mtx.unlock();
 }
 
