@@ -1,0 +1,3 @@
+/home/jae/git/zed-examples/svo recording/recording/cpp/build/CMakeFiles/edit_cache.dir
+/home/jae/git/zed-examples/svo recording/recording/cpp/build/CMakeFiles/rebuild_cache.dir
+/home/jae/git/zed-examples/svo recording/recording/cpp/build/CMakeFiles/ZED_SVO_Recording.dir

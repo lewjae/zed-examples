@@ -201,6 +201,9 @@ void TrackingViewer::generate_view(sl::Objects &objects, sl::Pose current_camera
     tracking_view = background.clone();
     // Scale
     drawScale(tracking_view);
+    
+    //Jae
+    std::cout << "*Jae - generate_view*: x_min " << x_min << ",  z_min " << z_min << std::endl;
 
     if (tracking_enabled) {
         // First add new points, and remove the ones that are too old
