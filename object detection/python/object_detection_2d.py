@@ -18,7 +18,11 @@
 #
 ########################################################################
 
+import sys
 import pyzed.sl as sl
+
+sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+
 import cv2
 import numpy as np
 
