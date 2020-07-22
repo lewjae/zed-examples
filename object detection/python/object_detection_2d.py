@@ -32,6 +32,7 @@ id_colors = [(59, 232, 176),
              (105,102,205),
              (255,185,0),
              (252,99,107)]
+red_color = (0,0,255)
 
 def get_color_id_gr(idx):
     color_idx = idx % 5
@@ -131,6 +132,7 @@ def main():
     obj_runtime_param.detection_confidence_threshold = 40
 
     corners = [0]*8
+    font = cv2.FONT_HERSHEY_SIMPLEX
     while key != 113: # for 'q' key
         # Grab an image, a RuntimeParameters object must be given to grab()
         if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
@@ -141,16 +143,24 @@ def main():
             if objects.is_new:
                 obj_array = objects.object_list
                 print("\n"+str(len(obj_array))+ " Object are detected")
+                violated = compute_distance(obj_array) 
+
                 image_data = mat.get_data()
                 for object in obj_array:
                     #object = sl.ObjectData()
                     objects.get_object_data_from_id(object,0)
                     #print("{}  {}".format(object.id, object.position))
                     bounding_box = object.bounding_box_2d
-                    bounding_box_3D = object.bounding_box
+                    #bounding_box_3D = object.bounding_box
                     #print(bounding_box_3D)
 
-                    cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
+                    if violated:
+                        cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
+                           (int(bounding_box[2,0]),int(bounding_box[2,1])),
+                              red_color, 10)
+                        cv2.putText(image_data,'SOCIAL DISTANCING VIOLATED!!!',(30,70),font,2,red_color,2,cv2.LINE_AA)
+                    else:
+                        cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
                            (int(bounding_box[2,0]),int(bounding_box[2,1])),
                               get_color_id_gr(int(object.id)), 3)
                     
@@ -176,7 +186,6 @@ def main():
                     cv2.line(image_data,corners[2],corners[6], get_color_id_gr(int(object.id)),3)    
                     cv2.line(image_data,corners[3],corners[7], get_color_id_gr(int(object.id)),3)    
                     """
-                compute_distance(obj_array)    
 
                 cv2.imshow("ZED", image_data)
         key = cv2.waitKey(5)
