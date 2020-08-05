@@ -26,6 +26,7 @@ sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
 import numpy as np
 import argparse
+from trackingviewer import TrackingViewer 
 
 id_colors = [(59, 232, 176),
              (25,175,208),
@@ -74,6 +75,7 @@ def compute_distance(obj_array):
                     print("SOCIAL DISTANCING is Vilated !!!")
                     print("Distance from {} to {} is {} ".format(obj_array[i].id, obj_array[j].id, distance))
     return violated
+
 
 def main():
 
@@ -133,6 +135,20 @@ def main():
 
     corners = [0]*8
     font = cv2.FONT_HERSHEY_SIMPLEX
+
+    # 2D Tracker for Birdeyeview
+    
+    camera_infos = zed.get_camera_information()
+    resolution = camera_infos.camera_resolution
+    camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
+    
+    track_view_generator = TrackingViewer()
+    track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
+    track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
+    track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
+
+
+
     while key != 113: # for 'q' key
         # Grab an image, a RuntimeParameters object must be given to grab()
         if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
@@ -159,10 +175,15 @@ def main():
                            (int(bounding_box[2,0]),int(bounding_box[2,1])),
                               red_color, 10)
                         cv2.putText(image_data,'SOCIAL DISTANCING VIOLATED!!!',(30,70),font,2,red_color,2,cv2.LINE_AA)
+                        cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
+                            font,1, red_color,2,cv2.LINE_AA)
+                    
                     else:
                         cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
                            (int(bounding_box[2,0]),int(bounding_box[2,1])),
                               get_color_id_gr(int(object.id)), 3)
+                        cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
+                            font,1, get_color_id_gr(int(object.id)),2,cv2.LINE_AA)
                     
                     """
                     bounding_box_3D = object.bounding_box
