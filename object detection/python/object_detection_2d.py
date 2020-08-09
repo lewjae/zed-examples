@@ -28,12 +28,23 @@ import numpy as np
 import argparse
 from trackingviewer import TrackingViewer 
 
+import matplotlib.pyplot as plt
+import live_plotter as lv # custome live plotter
+
 id_colors = [(59, 232, 176),
              (25,175,208),
              (105,102,205),
              (255,185,0),
              (252,99,107)]
 red_color = (0,0,255)
+
+PLAYER_START_INDEX = 1      # spawn index for player (keep to 1)
+FIGSIZE_X_INCHES   = 8      # x figure size of feedback in inches
+FIGSIZE_Y_INCHES   = 8      # y figure size of feedback in inches
+PLOT_LEFT          = 0.1    # in fractions of figure width and height
+PLOT_BOT           = 0.1    
+PLOT_WIDTH         = 0.8
+PLOT_HEIGHT        = 0.8
 
 def get_color_id_gr(idx):
     color_idx = idx % 5
@@ -72,10 +83,18 @@ def compute_distance(obj_array):
                 distance = np.linalg.norm(np.array(obj_array[i].position) - np.array(obj_array[j].position))
                 if distance < 2000 and distance != 0.0:
                     violated = True
-                    print("SOCIAL DISTANCING is Vilated !!!")
-                    print("Distance from {} to {} is {} ".format(obj_array[i].id, obj_array[j].id, distance))
+                    #print("SOCIAL DISTANCING is Vilated !!!")
+                    #print("Distance from {} to {} is {} ".format(obj_array[i].id, obj_array[j].id, distance))
     return violated
 
+def display_birdeyeview(obj_array):
+    for obj in obj_array: 
+        print(obj.position)
+        plt.axis([-10000,10000,-10000,10000])
+        plt.scatter(x=[obj.position[0]],y=[obj.position[2]],c ='b',marker ='o')
+        print("[Jae]: ", obj.position[0], obj.position[2])
+        plt.pause(0.001)
+        plt.draw()
 
 def main():
 
@@ -141,13 +160,22 @@ def main():
     camera_infos = zed.get_camera_information()
     resolution = camera_infos.camera_resolution
     camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
-    
+    """
     track_view_generator = TrackingViewer()
     track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
     track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
     track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
+    
+    lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
+    trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
+        title='People Trajectory',
+        figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
+        edgecolor="black",
+        rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
+    """
 
-
+    #trajectory_fig.set_axis_equal()
+    #trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
 
     while key != 113: # for 'q' key
         # Grab an image, a RuntimeParameters object must be given to grab()
@@ -159,6 +187,10 @@ def main():
             if objects.is_new:
                 obj_array = objects.object_list
                 print("\n"+str(len(obj_array))+ " Object are detected")
+
+                display_birdeyeview(obj_array)
+
+
                 violated = compute_distance(obj_array) 
 
                 image_data = mat.get_data()
@@ -169,6 +201,10 @@ def main():
                     bounding_box = object.bounding_box_2d
                     #bounding_box_3D = object.bounding_box
                     #print(bounding_box_3D)
+
+                    # live bird's eye plotter
+                    #trajectory_fig.roll("car", object.position[0], object.position[2])
+
 
                     if violated:
                         cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
