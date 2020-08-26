@@ -21,7 +21,7 @@
 import sys
 import pyzed.sl as sl
 
-sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+#sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 
 import cv2
 import numpy as np
@@ -29,7 +29,7 @@ import argparse
 from trackingviewer import TrackingViewer 
 
 import matplotlib.pyplot as plt
-import live_plotter as lv # custome live plotter
+#import live_plotter as lv # custome live plotter
 
 id_colors = [(59, 232, 176),
              (25,175,208),
@@ -188,7 +188,7 @@ def main():
                 obj_array = objects.object_list
                 print("\n"+str(len(obj_array))+ " Object are detected")
 
-                display_birdeyeview(obj_array)
+                #display_birdeyeview(obj_array)
 
 
                 violated = compute_distance(obj_array) 

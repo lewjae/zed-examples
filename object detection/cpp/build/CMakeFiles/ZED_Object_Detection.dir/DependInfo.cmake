@@ -4,19 +4,18 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/jae/git/zed-examples/object detection/cpp/src/GLViewer.cpp" "/home/jae/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/GLViewer.o"
-  "/home/jae/git/zed-examples/object detection/cpp/src/TrackingViewer.cpp" "/home/jae/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/TrackingViewer.o"
-  "/home/jae/git/zed-examples/object detection/cpp/src/main.cpp" "/home/jae/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/main.o"
+  "/home/jlew/git/zed-examples/object detection/cpp/src/GLViewer.cpp" "/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/GLViewer.o"
+  "/home/jlew/git/zed-examples/object detection/cpp/src/TrackingViewer.cpp" "/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/TrackingViewer.o"
+  "/home/jlew/git/zed-examples/object detection/cpp/src/main.cpp" "/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir/src/main.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/opt/ros/kinetic/include/opencv-3.3.1-dev"
-  "/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv"
   "/usr/local/zed/include"
   "/usr/local/cuda/include"
   "../include"
+  "/usr/local/include/opencv4"
   )
 
 # Targets to which this target links.
