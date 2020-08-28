@@ -151,6 +151,7 @@ TrackingViewer::TrackingViewer() {
     // camera settings
     fov = -1.0f;
 
+
     // Visualization settings
     background_color = cv::Scalar(248, 248, 248);
 #if (defined(CV_VERSION_EPOCH) && CV_VERSION_EPOCH == 2)
@@ -205,7 +206,7 @@ void TrackingViewer::generate_view(sl::Objects &objects, sl::Pose current_camera
     drawScale(tracking_view);
     
     //Jae
-    std::cout << "*Jae - generate_view*: x_min " << x_min << ",  z_min " << z_min << std::endl;
+    //std::cout << "[Jae] generate_view - new_pos.x: " << new_pos.x << std::endl;
 
     if (tracking_enabled) {
         // First add new points, and remove the ones that are too old

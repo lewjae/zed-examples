@@ -52,16 +52,6 @@ opencv2/opencv.hpp
 sl/Camera.hpp
 -
 
-/home/jlew/git/zed-examples/object detection/cpp/src/GLViewer.cpp
-GLViewer.hpp
-/home/jlew/git/zed-examples/object detection/cpp/src/GLViewer.hpp
-random
--
-
-/home/jlew/git/zed-examples/object detection/cpp/src/TrackingViewer.cpp
-TrackingViewer.hpp
-/home/jlew/git/zed-examples/object detection/cpp/src/TrackingViewer.hpp
-
 /home/jlew/git/zed-examples/object detection/cpp/src/main.cpp
 iostream
 -

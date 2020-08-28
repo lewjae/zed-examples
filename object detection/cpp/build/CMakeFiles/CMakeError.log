@@ -1,40 +1,40 @@
 Determining if the function sgemm_ exists failed with the following output:
 Change Dir: /home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_d0685/fast && /usr/bin/make -f CMakeFiles/cmTC_d0685.dir/build.make CMakeFiles/cmTC_d0685.dir/build
+Run Build Command(s):/usr/bin/make cmTC_2fd5a/fast && /usr/bin/make -f CMakeFiles/cmTC_2fd5a.dir/build.make CMakeFiles/cmTC_2fd5a.dir/build
 make[1]: Entering directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_d0685.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_   -o CMakeFiles/cmTC_d0685.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_d0685
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d0685.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sgemm_    -rdynamic CMakeFiles/cmTC_d0685.dir/CheckFunctionExists.c.o  -o cmTC_d0685 
-/usr/bin/ld: CMakeFiles/cmTC_d0685.dir/CheckFunctionExists.c.o: in function `main':
+Building C object CMakeFiles/cmTC_2fd5a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_   -o CMakeFiles/cmTC_2fd5a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2fd5a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2fd5a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sgemm_    -rdynamic CMakeFiles/cmTC_2fd5a.dir/CheckFunctionExists.c.o  -o cmTC_2fd5a 
+/usr/bin/ld: CMakeFiles/cmTC_2fd5a.dir/CheckFunctionExists.c.o: in function `main':
 CheckFunctionExists.c:(.text+0x14): undefined reference to `sgemm_'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_d0685.dir/build.make:87: cmTC_d0685] Error 1
+make[1]: *** [CMakeFiles/cmTC_2fd5a.dir/build.make:87: cmTC_2fd5a] Error 1
 make[1]: Leaving directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_d0685/fast] Error 2
+make: *** [Makefile:121: cmTC_2fd5a/fast] Error 2
 
 
 
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_18418/fast && /usr/bin/make -f CMakeFiles/cmTC_18418.dir/build.make CMakeFiles/cmTC_18418.dir/build
+Run Build Command(s):/usr/bin/make cmTC_40df0/fast && /usr/bin/make -f CMakeFiles/cmTC_40df0.dir/build.make CMakeFiles/cmTC_40df0.dir/build
 make[1]: Entering directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_18418.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_18418.dir/src.c.o   -c "/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp/src.c"
-Linking C executable cmTC_18418
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18418.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_18418.dir/src.c.o  -o cmTC_18418 
-/usr/bin/ld: CMakeFiles/cmTC_18418.dir/src.c.o: in function `main':
+Building C object CMakeFiles/cmTC_40df0.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_40df0.dir/src.c.o   -c "/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp/src.c"
+Linking C executable cmTC_40df0
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_40df0.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_40df0.dir/src.c.o  -o cmTC_40df0 
+/usr/bin/ld: CMakeFiles/cmTC_40df0.dir/src.c.o: in function `main':
 src.c:(.text+0x46): undefined reference to `pthread_create'
 /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
 /usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_18418.dir/build.make:87: cmTC_18418] Error 1
+make[1]: *** [CMakeFiles/cmTC_40df0.dir/build.make:87: cmTC_40df0] Error 1
 make[1]: Leaving directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_18418/fast] Error 2
+make: *** [Makefile:121: cmTC_40df0/fast] Error 2
 
 
 Source file was:
@@ -60,18 +60,18 @@ int main(void)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_258a0/fast && /usr/bin/make -f CMakeFiles/cmTC_258a0.dir/build.make CMakeFiles/cmTC_258a0.dir/build
+Run Build Command(s):/usr/bin/make cmTC_25644/fast && /usr/bin/make -f CMakeFiles/cmTC_25644.dir/build.make CMakeFiles/cmTC_25644.dir/build
 make[1]: Entering directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_258a0.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_258a0.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
-Linking C executable cmTC_258a0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_258a0.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_258a0.dir/CheckFunctionExists.c.o  -o cmTC_258a0  -lpthreads 
+Building C object CMakeFiles/cmTC_25644.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_25644.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_25644
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25644.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_25644.dir/CheckFunctionExists.c.o  -o cmTC_25644  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_258a0.dir/build.make:87: cmTC_258a0] Error 1
+make[1]: *** [CMakeFiles/cmTC_25644.dir/build.make:87: cmTC_25644] Error 1
 make[1]: Leaving directory '/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_258a0/fast] Error 2
+make: *** [Makefile:121: cmTC_25644/fast] Error 2
 
 
 

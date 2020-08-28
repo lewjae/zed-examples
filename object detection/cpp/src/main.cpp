@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
         init_parameters.depth_mode = DEPTH_MODE::PERFORMANCE;
     else
         init_parameters.depth_mode = DEPTH_MODE::ULTRA;
-    init_parameters.depth_maximum_distance = 50.0f * 1000.0f;
+    init_parameters.depth_maximum_distance = 20.0f * 1000.0f;  //changed from 50.0f to 20.0f
     init_parameters.coordinate_system = COORDINATE_SYSTEM::RIGHT_HANDED_Y_UP; // OpenGL's coordinate system is right_handed
     parseArgs(argc, argv, init_parameters);
     
@@ -156,8 +156,23 @@ int main(int argc, char **argv) {
             render_2D(image_left, img_scale, objects.object_list, true);
             zed.getPosition(cam_pose, REFERENCE_FRAME::CAMERA);
             track_view_generator.generate_view(objects, cam_pose, track_view, objects.is_tracked);
+
+            //Jae
+            cout << "[Jae] Detected " << objects.object_list.size() << " Object(s)" << endl;
+            for (auto &obj : objects.object_list) {
+                sl::Translation pos = obj.position;
+                //sl::Translation new_pos = pos * current_camera_pose.getOrientation() + current_camera_pose.getTranslation();
+                //obj.position = sl::float3(new_pos.x, new_pos.y, new_pos.z);
+                cout << "[Jae] Detected ID " << obj.id << ":  "<<pos.x<<", "<<pos.y<<", "<<pos.z<< endl;
+            }
+
+
+
+
+            //cout << "[Jae] objects.object_list: "  << objects.object_list[0]<< endl;
 #else
             cout << "Detected " << objects.object_list.size() << " Object(s)" << endl;
+
 #endif
         }
 
