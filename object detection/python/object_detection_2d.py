@@ -21,9 +21,8 @@
 import sys
 import pyzed.sl as sl
 
-<<<<<<< HEAD
 #sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
-=======
+
 
 import cv2
 import numpy as np
@@ -31,15 +30,15 @@ import argparse
 from trackingviewer import TrackingViewer 
 
 import matplotlib.pyplot as plt
-<<<<<<< HEAD
+
 #import live_plotter as lv # custome live plotter
-=======
+
 
 id_colors = [(59, 232, 176),
-             (25,175,208),
-             (105,102,205),
-             (255,185,0),
-             (252,99,107)]
+			 (25,175,208),
+			 (105,102,205),
+			 (255,185,0),
+			 (252,99,107)]
 red_color = (0,0,255)
 
 PLAYER_START_INDEX = 1      # spawn index for player (keep to 1)
@@ -51,245 +50,252 @@ PLOT_WIDTH         = 0.8
 PLOT_HEIGHT        = 0.8
 
 def get_color_id_gr(idx):
-    color_idx = idx % 5
-    arr = id_colors[color_idx]
-    return arr
+	color_idx = idx % 5
+	arr = id_colors[color_idx]
+	return arr
 
 def project3Dto2D(pt3D):
-    #[LEFT_CAM_HD]
-    fx=527.62
-    fy=527.045
-    cx=642.77
-    cy=365.4935
-    k1=-0.0441568
-    k2=0.0126964
-    k3=-0.00563514
-    p1=0.00051255
-    p2=-3.78875e-06
+	#[LEFT_CAM_HD]
+	fx=527.62
+	fy=527.045
+	cx=642.77
+	cy=365.4935
+	k1=-0.0441568
+	k2=0.0126964
+	k3=-0.00563514
+	p1=0.00051255
+	p2=-3.78875e-06
 
-    x_ = pt3D[0]/pt3D[2]
-    y_ = pt3D[1]/pt3D[2]
-    r2 = x_*x_ + y_*y_
-    k = 1 + k1*r2 + k3*r2*r2 + k3*r2*r2*r2
-    x__ = x_*k + 2*p1*x_*y_ + p2*(r2+2*x_*x_)
-    y__ = y_*k + 2*p2*x_*y_ + p1*(r2+2*y_*y_)
-    u = int(fx*x_ + cx) 
-    v = int(fy*y_ + cy) 
-    return (u,v)
+	x_ = pt3D[0]/pt3D[2]
+	y_ = pt3D[1]/pt3D[2]
+	r2 = x_*x_ + y_*y_
+	k = 1 + k1*r2 + k3*r2*r2 + k3*r2*r2*r2
+	x__ = x_*k + 2*p1*x_*y_ + p2*(r2+2*x_*x_)
+	y__ = y_*k + 2*p2*x_*y_ + p1*(r2+2*y_*y_)
+	u = int(fx*x_ + cx) 
+	v = int(fy*y_ + cy) 
+	return (u,v)
 
 def compute_distance(obj_array):
-    n = len(obj_array)
-    violated = False
-    if n >= 2:
-        for i in range(n-1):
-            for j in range (i+1,n):
-                violated = False
-                distance = np.linalg.norm(np.array(obj_array[i].position) - np.array(obj_array[j].position))
-                if distance < 2000 and distance != 0.0:
-                    violated = True
-                    #print("SOCIAL DISTANCING is Vilated !!!")
-                    #print("Distance from {} to {} is {} ".format(obj_array[i].id, obj_array[j].id, distance))
-    return violated
+	n = len(obj_array)
+	violated = False
+	violators = []
+	
+	if n >= 2:
+		for i in range(n-1):
+			for j in range (i+1,n):
+				violated = False
+				distance = np.linalg.norm(np.array(obj_array[i].position) - np.array(obj_array[j].position))
+				if distance < 2000 and distance != 0.0:
+					violated = True
+					print("SOCIAL DISTANCING is Vilated !!!")
+					print("Distance from %d to %d is %4.1f m" % (obj_array[i].id, obj_array[j].id, distance/1000.))
+					violators.extend([obj_array[i].id, obj_array[j].id])   
+	return violated, violators
 
 def display_birdeyeview(obj_array):
-    for obj in obj_array: 
-        print(obj.position)
-        plt.axis([-10000,10000,-10000,10000])
-        plt.scatter(x=[obj.position[0]],y=[obj.position[2]],c ='b',marker ='o')
-        print("[Jae]: ", obj.position[0], obj.position[2])
-        plt.pause(0.001)
-        plt.draw()
+	for obj in obj_array: 
+		print(obj.position)
+		plt.axis([-10000,10000,-10000,10000])
+		plt.scatter(x=[obj.position[0]],y=[obj.position[2]],c ='b',marker ='o')
+		print("[Jae]: ", obj.position[0], obj.position[2])
+		plt.pause(0.001)
+		plt.draw()
 
 def main():
 
-    if (len(sys.argv) > 1):
-        if ".svo" in sys.argv[1]:
-            svo_file = sys.argv[1]
-            print("Getting the video from: ", svo_file)
-            input_type = sl.InputType()
-            input_type.set_from_svo_file(svo_file)
-            init_params = sl.InitParameters(input_t=input_type, svo_real_time_mode=False)   
-        else:
-            print("[Error]: Please specify an svo file path")
-            exit(1)
+	if (len(sys.argv) > 1):
+		if ".svo" in sys.argv[1]:
+			svo_file = sys.argv[1]
+			print("Getting the video from: ", svo_file)
+			input_type = sl.InputType()
+			input_type.set_from_svo_file(svo_file)
+			init_params = sl.InitParameters(input_t=input_type, svo_real_time_mode=False)   
+		else:
+			print("[Error]: Please specify an svo file path")
+			exit(1)
 
-    else:
-            # Create a InitParameters object and set configuration parameters
-        init_params = sl.InitParameters()
-        init_params.camera_resolution = sl.RESOLUTION.HD720  # Use HD720 video mode
-        init_params.camera_fps = 15  # Set fps at 15
+	else:
+			# Create a InitParameters object and set configuration parameters
+		init_params = sl.InitParameters()
+		init_params.camera_resolution = sl.RESOLUTION.HD720  # Use HD720 video mode
+		init_params.camera_fps = 15  # Set fps at 15
 
-    # Create a Camera object
-    zed = sl.Camera()
-
-
-    # Open the camera
-    err = zed.open(init_params)
-    if err != sl.ERROR_CODE.SUCCESS:
-        exit(1)
-
-    # Capture 50 frames and stop
-    mat = sl.Mat()
-    runtime_parameters = sl.RuntimeParameters()
-    key = ''
-
-    #Enable positional tracking with default parameters
-    tracking_param = sl.PositionalTrackingParameters()
-    err = zed.enable_positional_tracking(tracking_param)
-    if err != sl.ERROR_CODE.SUCCESS:
-        print("Enabled position_tracking", err, "\nExit program.")
-        zed.close()
-        exit(-1)
-
-    obj_param = sl.ObjectDetectionParameters()
-    obj_param.enable_tracking = True
-
-    err = zed.enable_object_detection(obj_param)
-    if err != sl.ERROR_CODE.SUCCESS:
-        print("Enabled object_detection", err, "\nExit program.")
-        zed.close()
-        exit(-1)
+	# Create a Camera object
+	zed = sl.Camera()
 
 
+	# Open the camera
+	err = zed.open(init_params)
+	if err != sl.ERROR_CODE.SUCCESS:
+		exit(1)
 
-    objects = sl.Objects()
-    obj_runtime_param = sl.ObjectDetectionRuntimeParameters()
-    obj_runtime_param.detection_confidence_threshold = 40
+	# Capture 50 frames and stop
+	mat = sl.Mat()
+	runtime_parameters = sl.RuntimeParameters()
+	key = ''
 
-    corners = [0]*8
-    font = cv2.FONT_HERSHEY_SIMPLEX
+	#Enable positional tracking with default parameters
+	tracking_param = sl.PositionalTrackingParameters()
+	err = zed.enable_positional_tracking(tracking_param)
+	if err != sl.ERROR_CODE.SUCCESS:
+		print("Enabled position_tracking", err, "\nExit program.")
+		zed.close()
+		exit(-1)
 
-    # 2D Tracker for Birdeyeview
-    
-    camera_infos = zed.get_camera_information()
-    resolution = camera_infos.camera_resolution
-    camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
-    """
-    track_view_generator = TrackingViewer()
-    track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
-    track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
-    track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
-    
-    lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
-    trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
-        title='People Trajectory',
-        figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
-        edgecolor="black",
-        rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
-    """
+	obj_param = sl.ObjectDetectionParameters()
+	obj_param.enable_tracking = True
 
-    #trajectory_fig.set_axis_equal()
-    #trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
-
-    corners = [0]*8
-    font = cv2.FONT_HERSHEY_SIMPLEX
-
-    # 2D Tracker for Birdeyeview
-    
-    camera_infos = zed.get_camera_information()
-    resolution = camera_infos.camera_resolution
-    camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
-    """
-    track_view_generator = TrackingViewer()
-    track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
-    track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
-    track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
-    
-    lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
-    trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
-        title='People Trajectory',
-        figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
-        edgecolor="black",
-        rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
-    """
-
-    #trajectory_fig.set_axis_equal()
-    #trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
-
-    while key != 113: # for 'q' key
-        # Grab an image, a RuntimeParameters object must be given to grab()
-        if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
-            # A new image is available if grab() returns SUCCESS
-            zed.retrieve_image(mat, sl.VIEW.LEFT)
-            zed.retrieve_objects(objects, obj_runtime_param)
-            
-            if objects.is_new:
-                obj_array = objects.object_list
-                print("\n"+str(len(obj_array))+ " Object are detected")
-
-<<<<<<< HEAD
-                #display_birdeyeview(obj_array)
-=======
-                display_birdeyeview(obj_array)
->>>>>>> 74949781f7fd889d6a33ed6e8d17d2c1a5ce1056
+	err = zed.enable_object_detection(obj_param)
+	if err != sl.ERROR_CODE.SUCCESS:
+		print("Enabled object_detection", err, "\nExit program.")
+		zed.close()
+		exit(-1)
 
 
-                violated = compute_distance(obj_array) 
 
-                image_data = mat.get_data()
-                for object in obj_array:
-                    #object = sl.ObjectData()
-                    objects.get_object_data_from_id(object,0)
-                    #print("{}  {}".format(object.id, object.position))
-                    bounding_box = object.bounding_box_2d
-                    #bounding_box_3D = object.bounding_box
-                    #print(bounding_box_3D)
+	objects = sl.Objects()
+	obj_runtime_param = sl.ObjectDetectionRuntimeParameters()
+	obj_runtime_param.detection_confidence_threshold = 40
 
-                    # live bird's eye plotter
-                    #trajectory_fig.roll("car", object.position[0], object.position[2])
+	corners = [0]*8
+	font = cv2.FONT_HERSHEY_SIMPLEX
+
+	# 2D Tracker for Birdeyeview
+	
+	camera_infos = zed.get_camera_information()
+	resolution = camera_infos.camera_resolution
+	camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
+	"""
+	track_view_generator = TrackingViewer()
+	track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
+	track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
+	track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
+	
+	lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
+	trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
+		title='People Trajectory',
+		figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
+		edgecolor="black",
+		rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
+	"""
+
+	#trajectory_fig.set_axis_equal()
+	#trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
+
+	corners = [0]*8
+	font = cv2.FONT_HERSHEY_SIMPLEX
+
+	# 2D Tracker for Birdeyeview
+	
+	camera_infos = zed.get_camera_information()
+	resolution = camera_infos.camera_resolution
+	camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
+	"""
+	track_view_generator = TrackingViewer()
+	track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
+	track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
+	track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
+	
+	lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
+	trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
+		title='People Trajectory',
+		figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
+		edgecolor="black",
+		rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
+	"""
+
+	#trajectory_fig.set_axis_equal()
+	#trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
+
+	while key != 113: # for 'q' key
+		# Grab an image, a RuntimeParameters object must be given to grab()
+		if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
+			# A new image is available if grab() returns SUCCESS
+			zed.retrieve_image(mat, sl.VIEW.LEFT)
+			zed.retrieve_objects(objects, obj_runtime_param)
+			
+			if objects.is_new:
+				obj_array = objects.object_list
+				print("\n"+str(len(obj_array))+ " Objects are detected")
+
+				#display_birdeyeview(obj_array)
 
 
-                    if violated:
-                        cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
-                           (int(bounding_box[2,0]),int(bounding_box[2,1])),
-                              red_color, 10)
-                        cv2.putText(image_data,'SOCIAL DISTANCING VIOLATED!!!',(30,70),font,2,red_color,2,cv2.LINE_AA)
-                        cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
-                            font,1, red_color,2,cv2.LINE_AA)
-                    
-                    else:
-                        cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
-                           (int(bounding_box[2,0]),int(bounding_box[2,1])),
-                              get_color_id_gr(int(object.id)), 3)
-                        cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
-                            font,1, get_color_id_gr(int(object.id)),2,cv2.LINE_AA)
-                    
-                    """
-                    bounding_box_3D = object.bounding_box
-                    for i in range(8):
-                        corners[i] = project3Dto2D(bounding_box_3D[i])
-                    # Connect top corners
-                    cv2.line(image_data,corners[0],corners[1], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[1],corners[2], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[2],corners[3], get_color_id_gr(int(object.id)),3)    
-                    cv2.line(image_data,corners[0],corners[3], get_color_id_gr(int(object.id)),3)    
+				violated, violators= compute_distance(obj_array) 
 
-                    # Connect bottoms corners
-                    cv2.line(image_data,corners[4],corners[5], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[5],corners[6], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[6],corners[7], get_color_id_gr(int(object.id)),3)    
-                    cv2.line(image_data,corners[4],corners[7], get_color_id_gr(int(object.id)),3)    
+				image_data = mat.get_data()
+				for object in obj_array:
+					#object = sl.ObjectData()
+					objects.get_object_data_from_id(object,0)
+					#print("{}  {}".format(object.id, object.position))
+					bounding_box = object.bounding_box_2d
+					#bounding_box_3D = object.bounding_box
+					#print(bounding_box_3D)
 
-                    # Connest vertical corners
-                    cv2.line(image_data,corners[0],corners[4], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[1],corners[5], get_color_id_gr(int(object.id)),3)
-                    cv2.line(image_data,corners[2],corners[6], get_color_id_gr(int(object.id)),3)    
-                    cv2.line(image_data,corners[3],corners[7], get_color_id_gr(int(object.id)),3)    
-                    """
+					# live bird's eye plotter
+					#trajectory_fig.roll("car", object.position[0], object.position[2])
 
-                cv2.imshow("ZED", image_data)
-        key = cv2.waitKey(5)
 
-    cv2.destroyAllWindows()
+					if violated:
+						cv2.putText(image_data,'SOCIAL DISTANCING VIOLATED!!!',(30,70),font,2,red_color,2,cv2.LINE_AA)
+						
+						if object.id in violators:
+							cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
+						   				(int(bounding_box[2,0]),int(bounding_box[2,1])),
+							  			red_color, 10)
+							cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
+										font,1, red_color,2,cv2.LINE_AA)
+						else:
+							cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
+						   			(int(bounding_box[2,0]),int(bounding_box[2,1])),
+							  		get_color_id_gr(int(object.id)), 3)
+							cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
+									font,1, get_color_id_gr(int(object.id)),2,cv2.LINE_AA)
 
-    # Close the camera
-    zed.close()
+					else:
+						cv2.rectangle(image_data, (int(bounding_box[0,0]),int(bounding_box[0,1])),
+						   			(int(bounding_box[2,0]),int(bounding_box[2,1])),
+							  		get_color_id_gr(int(object.id)), 3)
+						cv2.putText(image_data,"ID: "+str(object.id), (int(bounding_box[0,0]), int(bounding_box[0,1])),
+									font,1, get_color_id_gr(int(object.id)),2,cv2.LINE_AA)
+					
+					"""
+					bounding_box_3D = object.bounding_box
+					for i in range(8):
+						corners[i] = project3Dto2D(bounding_box_3D[i])
+					# Connect top corners
+					cv2.line(image_data,corners[0],corners[1], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[1],corners[2], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[2],corners[3], get_color_id_gr(int(object.id)),3)    
+					cv2.line(image_data,corners[0],corners[3], get_color_id_gr(int(object.id)),3)    
+
+					# Connect bottoms corners
+					cv2.line(image_data,corners[4],corners[5], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[5],corners[6], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[6],corners[7], get_color_id_gr(int(object.id)),3)    
+					cv2.line(image_data,corners[4],corners[7], get_color_id_gr(int(object.id)),3)    
+
+					# Connest vertical corners
+					cv2.line(image_data,corners[0],corners[4], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[1],corners[5], get_color_id_gr(int(object.id)),3)
+					cv2.line(image_data,corners[2],corners[6], get_color_id_gr(int(object.id)),3)    
+					cv2.line(image_data,corners[3],corners[7], get_color_id_gr(int(object.id)),3)    
+					"""
+
+				cv2.imshow("ZED", image_data)
+		key = cv2.waitKey(5)
+
+	cv2.destroyAllWindows()
+
+	# Close the camera
+	zed.close()
 
 if __name__ == "__main__":
 
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argment('--svo')
-    args = parser.parse_args()
-    """
-    main()
+	"""
+	parser = argparse.ArgumentParser()
+	parser.add_argment('--svo')
+	args = parser.parse_args()
+	"""
+	main()
