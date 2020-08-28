@@ -1,4 +1,4 @@
-########################################################################
+###################################################################
 #
 # Copyright (c) 2020, STEREOLABS.
 #
@@ -21,7 +21,9 @@
 import sys
 import pyzed.sl as sl
 
+<<<<<<< HEAD
 #sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+=======
 
 import cv2
 import numpy as np
@@ -29,7 +31,9 @@ import argparse
 from trackingviewer import TrackingViewer 
 
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
 #import live_plotter as lv # custome live plotter
+=======
 
 id_colors = [(59, 232, 176),
              (25,175,208),
@@ -177,6 +181,31 @@ def main():
     #trajectory_fig.set_axis_equal()
     #trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
 
+    corners = [0]*8
+    font = cv2.FONT_HERSHEY_SIMPLEX
+
+    # 2D Tracker for Birdeyeview
+    
+    camera_infos = zed.get_camera_information()
+    resolution = camera_infos.camera_resolution
+    camera_parameters = zed.get_camera_information(resolution).calibration_parameters.left_cam 
+    """
+    track_view_generator = TrackingViewer()
+    track_view_generator.setZMin(-1000.0 * init_params.depth_maximum_distance)
+    track_view_generator.setFPS(camera_infos.camera_configuration.camera_fps, True)
+    track_view_generator.setCameraCalibration(camera_infos.camera_configuration.calibration_parameters)
+    
+    lp_traj = lv.LivePlotter(tk_title="Bird's Eye View")
+    trajectory_fig = lp_traj.plot_new_dynamic_2d_figure(
+        title='People Trajectory',
+        figsize=(FIGSIZE_X_INCHES,FIGSIZE_Y_INCHES),
+        edgecolor="black",
+        rect=[PLOT_LEFT, PLOT_BOT, PLOT_WIDTH, PLOT_WIDTH])
+    """
+
+    #trajectory_fig.set_axis_equal()
+    #trajectory_fig.add_graph("car", window_size=1, marker="s", color='b', markertext="Car",marker_text_offset=1)
+
     while key != 113: # for 'q' key
         # Grab an image, a RuntimeParameters object must be given to grab()
         if zed.grab(runtime_parameters) == sl.ERROR_CODE.SUCCESS:
@@ -188,7 +217,11 @@ def main():
                 obj_array = objects.object_list
                 print("\n"+str(len(obj_array))+ " Object are detected")
 
+<<<<<<< HEAD
                 #display_birdeyeview(obj_array)
+=======
+                display_birdeyeview(obj_array)
+>>>>>>> 74949781f7fd889d6a33ed6e8d17d2c1a5ce1056
 
 
                 violated = compute_distance(obj_array) 

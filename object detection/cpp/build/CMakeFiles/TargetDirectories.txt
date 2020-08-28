@@ -1,3 +1,0 @@
-/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/rebuild_cache.dir
-/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/edit_cache.dir
-/home/jlew/git/zed-examples/object detection/cpp/build/CMakeFiles/ZED_Object_Detection.dir
