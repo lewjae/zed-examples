@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ZED_Body_Tracking_Viewer.dir/src/main.o"
   "CMakeFiles/ZED_Body_Tracking_Viewer.dir/src/GLViewer.o"
-  "ZED_Body_Tracking_Viewer.pdb"
+  "CMakeFiles/ZED_Body_Tracking_Viewer.dir/src/main.o"
   "ZED_Body_Tracking_Viewer"
+  "ZED_Body_Tracking_Viewer.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

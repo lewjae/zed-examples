@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -23,26 +23,22 @@ GL/glew.h
 -
 GL/freeglut.h
 -
-GL/gl.h
--
-GL/glut.h
--
 cuda.h
 -
 cuda_gl_interop.h
 -
 
-/home/jae/git/zed-examples/body tracking/cpp/src/GLViewer.cpp
+/home/jlew/git/zed-examples/body tracking/cpp/src/GLViewer.cpp
 GLViewer.hpp
-/home/jae/git/zed-examples/body tracking/cpp/src/GLViewer.hpp
+/home/jlew/git/zed-examples/body tracking/cpp/src/GLViewer.hpp
 random
 -
 
-/home/jae/git/zed-examples/body tracking/cpp/src/main.cpp
+/home/jlew/git/zed-examples/body tracking/cpp/src/main.cpp
 sl/Camera.hpp
 -
 GLViewer.hpp
-/home/jae/git/zed-examples/body tracking/cpp/src/GLViewer.hpp
+/home/jlew/git/zed-examples/body tracking/cpp/src/GLViewer.hpp
 
 /usr/local/cuda/include/builtin_types.h
 device_types.h
@@ -133,6 +129,8 @@ sm_61_intrinsics.h
 /usr/local/cuda/include/crt/sm_61_intrinsics.h
 sm_70_rt.h
 /usr/local/cuda/include/crt/sm_70_rt.h
+sm_80_rt.h
+/usr/local/cuda/include/crt/sm_80_rt.h
 surface_functions.h
 /usr/local/cuda/include/crt/surface_functions.h
 texture_fetch_functions.h
@@ -207,6 +205,24 @@ sm_70_rt.hpp
 /usr/local/cuda/include/crt/sm_70_rt.hpp
 
 /usr/local/cuda/include/crt/sm_70_rt.hpp
+builtin_types.h
+/usr/local/cuda/include/crt/builtin_types.h
+device_types.h
+/usr/local/cuda/include/crt/device_types.h
+host_defines.h
+/usr/local/cuda/include/crt/host_defines.h
+
+/usr/local/cuda/include/crt/sm_80_rt.h
+builtin_types.h
+/usr/local/cuda/include/crt/builtin_types.h
+device_types.h
+/usr/local/cuda/include/crt/device_types.h
+host_defines.h
+/usr/local/cuda/include/crt/host_defines.h
+sm_80_rt.hpp
+/usr/local/cuda/include/crt/sm_80_rt.hpp
+
+/usr/local/cuda/include/crt/sm_80_rt.hpp
 builtin_types.h
 /usr/local/cuda/include/crt/builtin_types.h
 device_types.h
