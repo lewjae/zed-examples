@@ -1,6 +1,5 @@
-SET(execName ZED_CUDA_Refocus)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
-PROJECT(${execName})
+PROJECT(ZED_CUDA_Refocus)
 
 option(LINK_SHARED_ZED "Link with the ZED SDK shared executable" ON)
 
@@ -42,11 +41,9 @@ link_directories(${OpenGL_LIBRARY_DIRS})
 FILE(GLOB_RECURSE SRC_FILES src/*.c*)
 FILE(GLOB_RECURSE HRD_FILES include/*.h)
 
-ADD_EXECUTABLE(${execName} ${HRD_FILES} ${SRC_FILES})
-add_definitions(-std=c++14 -g -O3)
-
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -std=c++14) 
-cuda_add_executable(${execName} ${SRC_FILES}) 
+set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -std=c++11)
+cuda_add_executable(${PROJECT_NAME} ${HRD_FILES} ${SRC_FILES}) 
+add_definitions(-std=c++14 -O3)
 
 if (LINK_SHARED_ZED)
     SET(ZED_LIBS ${ZED_LIBRARIES} ${CUDA_CUDA_LIBRARY} ${CUDA_CUDART_LIBRARY})
@@ -54,9 +51,14 @@ else()
     SET(ZED_LIBS ${ZED_STATIC_LIBRARIES} ${CUDA_CUDA_LIBRARY} ${CUDA_LIBRARY})
 endif()
 
-TARGET_LINK_LIBRARIES(${execName} 
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} 
                         ${SPECIAL_OS_LIBS} 
                         ${ZED_LIBS} 
                         ${OPENGL_LIBRARIES}
                         ${GLUT_LIBRARY}
                         ${GLEW_LIBRARIES})
+
+if(INSTALL_SAMPLES)
+    LIST(APPEND SAMPLE_LIST ${PROJECT_NAME})
+    SET(SAMPLE_LIST "${SAMPLE_LIST}" PARENT_SCOPE)
+endif()

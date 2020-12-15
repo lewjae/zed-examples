@@ -5,7 +5,7 @@ We assume that you have followed previous tutorials (opening the ZED and image c
 
 ### Prerequisites
 
-- Windows 10, Ubuntu LTS
+- Windows 10, Ubuntu LTS, L4T
 - [ZED SDK](https://www.stereolabs.com/developers/) and its dependencies ([CUDA](https://developer.nvidia.com/cuda-downloads))
 
 ## Build the program
@@ -103,7 +103,7 @@ If we want to use the depth map instead of the point cloud, you can get a depth 
 int x = image.getWidth() / 2;
 int y = image.getHeight() / 2;
 float depth_value;
-depth.getValue(x,y, &depth_value);
+depth.getValue(x,y, depth_value);
 printf("Depth to Camera at (%d, %d): %f mm\n", x, y, depth_value);
 ```
 

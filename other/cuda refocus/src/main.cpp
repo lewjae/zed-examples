@@ -25,7 +25,7 @@
  ****************************************************************************************************/
 
  // ZED SDK include
-#include <sl_zed/Camera.hpp>
+#include <sl/Camera.hpp>
 
 // OpenGL extensions
 #include "GL/glew.h"
@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 
     if (argc > 2) {
         cout << "Only the path of a SVO can be passed in arg" << endl;
-        return -1;
+        return EXIT_FAILURE;
     }
 
     // Init glut
@@ -141,27 +141,22 @@ int main(int argc, char **argv) {
 
     //init GLEW
     glewInit();
+    
+    InitParameters init_parameters;
+    init_parameters.depth_mode = DEPTH_MODE::ULTRA;
+    init_parameters.camera_resolution = RESOLUTION::HD720;
+    init_parameters.coordinate_units = UNIT::MILLIMETER;
+    init_parameters.depth_minimum_distance = 400.0f;
 
-    // Initialisation of the ZED camera
-    InitParameters parameters;
-    parameters.depth_mode = DEPTH_MODE::PERFORMANCE;
-    parameters.camera_resolution = RESOLUTION::HD720;
-    parameters.coordinate_units = UNIT::MILLIMETER;
-    parameters.depth_minimum_distance = 400.0f;
-
-    ERROR_CODE err = zed.open(parameters);
-    if (err != ERROR_CODE::SUCCESS) {
-        cout << "ZED Err on open : " << toString(err) << endl;
-        zed.close();
-        return -1;
+    // Open the camera
+    ERROR_CODE zed_open_state = zed.open(init_parameters);
+    if (zed_open_state != ERROR_CODE::SUCCESS) {
+        std::cout << "Error " << zed_open_state << ", exit program.\n";
+        return EXIT_FAILURE;
     }
 
     // Get Image Size
-    sl::Resolution camera_resolution_ = zed.getCameraInformation().camera_resolution;
-    int image_width_ = camera_resolution_.width;
-    int image_height_ = camera_resolution_.height;
-
-    cudaError_t err1;
+    sl::Resolution camera_resolution_ = zed.getCameraInformation().camera_configuration.resolution;
 
     // Create and Register OpenGL Texture for Image (RGBA -- 4channels)
     glEnable(GL_TEXTURE_2D);
@@ -169,10 +164,11 @@ int main(int argc, char **argv) {
     glBindTexture(GL_TEXTURE_2D, imageTex);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width_, image_height_, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, camera_resolution_.width, camera_resolution_.height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
-    err1 = cudaGraphicsGLRegisterImage(&pcuImageRes, imageTex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard);
-    if (err1 != 0) return -1;
+    cudaError_t state = cudaGraphicsGLRegisterImage(&pcuImageRes, imageTex, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsWriteDiscard);
+    if (state != cudaSuccess)
+        return EXIT_FAILURE;
 
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 
@@ -218,5 +214,5 @@ int main(int argc, char **argv) {
     gpu_depth_normalized.free();
     gpu_image_convol.free();
     zed.close();
-    return 0;
+    return EXIT_SUCCESS;
 }

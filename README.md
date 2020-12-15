@@ -1,18 +1,18 @@
-# Stereolabs ZED - Examples
+# ZED SDK 
 
-Links
---------
-ZED SDK - https://www.stereolabs.com/developers/
+The Stereolabs ZED SDK is a cross-platform library designed to get the best out of the [ZED](https://www.stereolabs.com/store/) cameras.
 
-General Documentation - https://docs.stereolabs.com/
+For the latest release check our [Developer Center](https://www.stereolabs.com/developers/).
 
-API Documentation - https://www.stereolabs.com/developers/documentation/API/latest
+General [Documentation](https://www.stereolabs.com/docs/) gives in-depth information about the products and their functionalities.
 
-Compilation Instructions - https://www.stereolabs.com/docs/getting-started/application-development/
+Compilation Instructions for [Windows](https://www.stereolabs.com/docs/app-development/cpp/windows/) and [Linux/Jetson](https://www.stereolabs.com/docs/app-development/cpp/linux/) are avaible for C++ and [Python](https://www.stereolabs.com/docs/app-development/python/install/). 
 
-Contents
---------
-The ZED SDK includes tutorials and samples that demonstrate the API features and code.
+
+If you need help or more informations check our [Support](https://support.stereolabs.com/) page or join our [Community](https://community.stereolabs.com/).
+
+
+# Examples Overview
 
 * **Tutorials** - A series of basic tutorials that demonstrate the use of each API module.
 
@@ -24,15 +24,12 @@ The ZED SDK includes tutorials and samples that demonstrate the API features and
 
 * **Positional Tracking** - This sample shows how to use positional tracking and display the result with OpenGL.
 
-* **Spatial Mapping** - This sample shows how to capture a mesh with the ZED and display it with OpenGL
+* **Spatial Mapping** - This sample shows how to capture a mesh with the ZED and display it with OpenGL. Classic Mesh and Point Cloud fusion are available.
 
-* **Object Detection** - This sample shows how to use the object detection module with the ZED 2
+* **Object Detection** - This sample shows how to use the object detection module with the ZED 2. Two ways of display are available.
+
+* **Body Tracking** - This sample shows how to use the object detection module to track persons with the ZED 2
 
 * **SVO Recording** - This sample shows how to record and playback video files in SVO format. SVO files lets you use all the ZED SDK features without having a ZED connected.
 
 * **Other** - Other general samples that demonstrate the use of the ZED SDK.
-
-
-Support
--------
-If you need assistance with the ZED, visit our Help Center at https://support.stereolabs.com or contact us at support@stereolabs.com.
